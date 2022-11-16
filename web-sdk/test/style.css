@@ -1,0 +1,22 @@
+#votingnode {
+    background: #eee;
+    border-radius: 16px;
+    font: 12pt Arial;
+    padding: 16px;
+}
+
+#votingnode div._title {
+    font-weight: bold;
+    color: navy;
+    font-size: 1.3em;
+}
+
+#votingnode fieldset._fields {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+#votingnode fieldset._fields ul {
+    list-style: none;
+}
