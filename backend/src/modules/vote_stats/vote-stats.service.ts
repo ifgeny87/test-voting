@@ -12,4 +12,8 @@ export class VoteStatsService extends BaseModelService<VoteStat>
 	) {
 		super(voteStatsRepository);
 	}
+
+	findOneByVoteId = async (voteId: number): Promise<VoteStat | null> => {
+		return await this.voteStatsRepository.findOne({ where: { voteId } });
+	};
 }

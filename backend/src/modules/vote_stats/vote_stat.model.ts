@@ -1,5 +1,7 @@
 import { AutoIncrement, Column, DataType, Model, PrimaryKey, Table } from 'sequelize-typescript';
 
+export type AnswerCounters = number[];
+
 @Table({ tableName: 'vote_stats' })
 export class VoteStat extends Model<VoteStat>
 {
@@ -8,9 +10,9 @@ export class VoteStat extends Model<VoteStat>
 	@Column({})
 	declare id: number;
 
-	@Column({field:'vote_id', type: DataType.INTEGER, allowNull: false })
+	@Column({ field: 'vote_id', type: DataType.INTEGER, allowNull: false })
 	declare voteId: number;
 
-	@Column({ field:'answer_counters',type: DataType.JSON, allowNull: false })
-	declare answerCounters: string;
+	@Column({ field: 'answer_counters', type: DataType.JSON, allowNull: false })
+	declare answerCounters: AnswerCounters;
 }

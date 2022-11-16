@@ -7,6 +7,7 @@ import { UsersModule } from './modules/users/users.module';
 import { VotesModule } from './modules/votes/votes.module';
 import { VoteAnswersModule } from './modules/vote_answers/vote-answers.module';
 import { VoteStatsModule } from './modules/vote_stats/vote-stats.module';
+import { PublicSiteModule } from './modules/public-site/public-site.module';
 
 @Module({
 	imports: [
@@ -20,6 +21,7 @@ import { VoteStatsModule } from './modules/vote_stats/vote-stats.module';
 		VotesModule,
 		VoteAnswersModule,
 		VoteStatsModule,
+		PublicSiteModule,
 	],
 })
 export class AppModule {}
