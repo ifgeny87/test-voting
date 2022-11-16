@@ -57,7 +57,7 @@ export class VotesController
 	@Post('create')
 	async createOne(@Body() newVoteDto: CreateVoteDto, @Req() req: any): Promise<void> {
 		const vote = await this.votesService.findOneByUrl(newVoteDto.url);
-		if (vote.status === VoteStatus.RUNNING) {
+		if (vote) {
 			throw new BadRequestException('Голосование для этой страницы уже существует');
 		}
 		// TODO add newVoteDto.showResultType check

@@ -28,7 +28,7 @@ export class DoesUserExist implements CanActivate
 		}
 		const userExist = await this.usersService.findOneByUsername(username);
 		if (userExist) {
-			throw new ForbiddenException('Имя пользователя занято');
+			throw new BadRequestException('Имя пользователя занято');
 		}
 		return true;
 	};
