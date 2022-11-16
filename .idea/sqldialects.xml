@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/backend/migrations/V01__users.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/backend/migrations/V02__votes.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/backend/migrations/V03__vote_answers.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/backend/migrations/V04__vote_stats.sql" dialect="PostgreSQL" />
+  </component>
+</project>
