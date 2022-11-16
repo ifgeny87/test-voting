@@ -4,11 +4,11 @@ export class BaseModelService<T extends Model>
 {
 	constructor(private readonly repository: any) {}
 
-	create = async (dto: any): Promise<T> => {
+	create = async (dto: Partial<T>): Promise<T> => {
 		return await this.repository.create(dto);
 	};
 
-	createAll = async (dtos: any[]): Promise<T> => {
+	createAll = async (dtos: Partial<T>[]): Promise<T> => {
 		return await this.repository.bulkCreate(dtos);
 	};
 
@@ -16,7 +16,11 @@ export class BaseModelService<T extends Model>
 		return await this.repository.findAll(options);
 	};
 
-	findOne = async (id: number): Promise<T> => {
+	findOne = async (options?: any): Promise<T> => {
+		return await this.repository.findOne(options);
+	};
+
+	findOneById = async (id: number): Promise<T> => {
 		return await this.repository.findOne({ where: { id } });
 	};
 
@@ -25,7 +29,7 @@ export class BaseModelService<T extends Model>
 	};
 
 	remove = async (id: number): Promise<void> => {
-		const dbEntity = await this.findOne(id);
+		const dbEntity = await this.findOneById(id);
 		return await dbEntity.destroy();
 	};
 }

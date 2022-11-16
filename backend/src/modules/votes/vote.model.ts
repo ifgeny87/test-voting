@@ -1,4 +1,5 @@
 import { AutoIncrement, Column, DataType, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import { Exclude, Expose } from 'class-transformer';
 
 export enum VoteShowResultType
 {
@@ -13,23 +14,29 @@ export enum VoteStatus
 	RUNNING = 'RUNNING',
 }
 
+@Exclude()
 @Table({ tableName: 'votes' })
 export class Vote extends Model<Vote>
 {
+	@Expose()
 	@AutoIncrement
 	@PrimaryKey
 	@Column({})
 	declare id: number;
 
+	@Expose()
 	@Column({ field: 'user_id', type: DataType.INTEGER, allowNull: false })
 	declare userId: number;
 
+	@Expose()
 	@Column({ type: DataType.STRING(150), allowNull: false })
 	declare title: string;
 
-	@Column({ type: DataType.TEXT, allowNull: false })
-	declare answers: string;
+	@Expose()
+	@Column({ type: DataType.JSON, allowNull: false })
+	declare answers: string[];
 
+	@Expose()
 	@Column({
 		field: 'show_result_type',
 		type: DataType.STRING(50),
@@ -37,9 +44,11 @@ export class Vote extends Model<Vote>
 	})
 	declare showResultType: VoteShowResultType;
 
+	@Expose()
 	@Column({ type: DataType.STRING(2500), allowNull: false })
 	declare url: string;
 
+	@Expose()
 	@Column({
 		type: DataType.STRING(50),
 		allowNull: false,

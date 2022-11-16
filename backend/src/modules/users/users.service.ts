@@ -25,4 +25,8 @@ export class UsersService extends BaseModelService<User>
 	findOneByUsername = async (username: string): Promise<User | null> => {
 		return await this.usersRepository.findOne({ where: { username } });
 	};
+
+	findOneByExToken = async (exToken: string): Promise<User | null> => {
+		return await this.usersRepository.findOne({ where: { exToken } });
+	};
 }

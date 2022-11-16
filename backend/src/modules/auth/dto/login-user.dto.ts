@@ -5,10 +5,10 @@ export class LoginUserDto
 	@IsNotEmpty()
 	@MinLength(4)
 	@MaxLength(50)
-	declare readonly username: string;
+	readonly username: string;
 
 	@IsNotEmpty()
 	@MinLength(4)
 	@MaxLength(50)
-	declare readonly password: string;
+	readonly password: string;
 }

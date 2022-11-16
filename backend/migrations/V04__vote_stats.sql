@@ -7,5 +7,6 @@ CREATE TABLE "vote_stats"
     "answer_counters" json                                         NOT NULL,
     "createdAt"       timestamptz                                  NOT NULL,
     "updatedAt"       timestamptz                                  NOT NULL,
-    CONSTRAINT "vote_stats_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "vote_stats_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "vote_stat_vote_fk" FOREIGN KEY("vote_id") REFERENCES "votes" ("id")
 ) WITH (oids = false);

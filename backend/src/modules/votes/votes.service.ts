@@ -12,4 +12,8 @@ export class VotesService extends BaseModelService<Vote>
 	) {
 		super(votesRepository);
 	}
+
+	findOneByUrl = async (url: string): Promise<Vote | null> => {
+		return await this.votesRepository.findOne({ where: { url } });
+	};
 }

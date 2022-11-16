@@ -12,6 +12,10 @@ export class User extends Model<User>
 	declare id: number;
 
 	@Expose()
+	@Column({ field: 'ex_token', type: DataType.STRING(50), allowNull: false })
+	declare exToken: string;
+
+	@Expose()
 	@Column({ type: DataType.STRING(50), allowNull: false })
 	declare username: string;
 

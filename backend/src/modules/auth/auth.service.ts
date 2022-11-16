@@ -30,8 +30,10 @@ export class AuthService
 
 	register = async (user: LoginUserDto): Promise<void> => {
 		const { password, username } = user;
+		const exToken = Math.random().toString(36).substring(2);
 		const passwordHash = await this.hashPassword(password);
 		await this.usersService.create({
+			exToken,
 			username,
 			passwordHash,
 		});

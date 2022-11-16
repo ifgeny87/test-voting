@@ -7,5 +7,7 @@ CREATE TABLE "vote_answers"
     "cookie_user_id" character varying(100)                         NOT NULL,
     "answer"         integer                                        NOT NULL,
     "createdAt"      timestamptz                                    NOT NULL,
-    CONSTRAINT "vote_answers_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "vote_answers_pkey" PRIMARY KEY ("id"),
+    CONSTRAINT "vote_answers_ukey" UNIQUE("vote_id", "cookie_user_id"),
+    CONSTRAINT "vote_answer_vote_fk" FOREIGN KEY("vote_id") REFERENCES "votes" ("id")
 ) WITH (oids = false);

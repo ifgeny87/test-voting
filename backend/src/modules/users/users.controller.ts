@@ -17,11 +17,9 @@ export class UsersController
 {
 	constructor(private readonly usersService: UsersService) {}
 
-	@Get('me')
-	async getMe(@Req() req: any): Promise<User> {
-		return await this.usersService.findOne(req.user.id);
-	}
-
+	/**
+	 * TODO убрать из прода
+	 */
 	@Get('list')
 	async list(): Promise<User[]> {
 		return await this.usersService.findAll();
