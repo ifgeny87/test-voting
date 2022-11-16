@@ -12,7 +12,6 @@ export class CreateVoteDto
 
 	@Transform(({ value }) => value.map(s => s.trim()).filter(Boolean))
 	@IsNotEmpty()
-	@MinLength(2)
 	readonly answers: string[];
 
 	@IsNotEmpty()
