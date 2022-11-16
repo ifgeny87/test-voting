@@ -6,7 +6,6 @@ export class CreateVoteDto
 {
 	@Transform(({ value }) => value.trim())
 	@IsNotEmpty()
-	@MinLength(1)
 	@MaxLength(150)
 	readonly title: string;
 
@@ -21,7 +20,6 @@ export class CreateVoteDto
 
 	@Transform(({ value }) => value.trim())
 	@IsNotEmpty()
-	@MinLength(1)
 	@MaxLength(2500)
 	readonly url: string;
 }

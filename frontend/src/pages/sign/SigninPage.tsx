@@ -54,22 +54,22 @@ export default function SigninPage() {
 
 	return <>
 		<form onSubmit={handleSubmit(onSubmit)}>
-			<h1>Signin</h1>
+			<h1>Авторизация</h1>
 			<div>
-				Username:
+				Имя пользователя:
 				<br />
 				<input {...register('username', usernameOptions)} />
 				{errors.username ? String(errors.username.message) || 'Заполните поле' : null}
 			</div>
 			<div>
-				Password:
+				Пароль:
 				<br />
 				<input {...register('password', passwordOptions)}
 				       type="password" autoComplete="current-password webauthn" />
 				{errors.password ? String(errors.password.message) || 'Заполните поле' : null}
 			</div>
 			{error ? <div>Ошибка: {error}</div> : null}
-			<input type="submit" disabled={isSubmitting} />
+			<button type="submit" disabled={isSubmitting}>Вход</button>
 		</form>
 	</>;
 }

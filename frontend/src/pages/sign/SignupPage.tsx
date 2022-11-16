@@ -66,22 +66,22 @@ export default function SignupPage() {
 
 	return <>
 		<form onSubmit={handleSubmit(onSubmit)}>
-			<h1>Signup</h1>
+			<h1>Регистрация</h1>
 			<div>
-				Username:
+				Имя пользователя:
 				<br />
 				<input {...register('username', usernameOptions)} />
 				{errors.username ? String(errors.username.message) || 'Заполните поле' : null}
 			</div>
 			<div>
-				Password:
+				Пароль:
 				<br />
 				<input {...register('password', passwordOptions)}
 				       type="password" autoComplete="" />
 				{errors.password ? String(errors.password.message) || 'Заполните поле' : null}
 			</div>
 			{error ? <div className="error">Ошибка: {error}</div> : null}
-			<input type="submit" disabled={isSubmitting} />
+			<button type="submit" disabled={isSubmitting}>Регистрация</button>
 		</form>
 	</>;
 }

@@ -19,7 +19,7 @@ export default function AuthorizedContainer() {
 
 	return (
 		<>
-			<button onClick={logout}>Logout</button>
+			<button onClick={logout}>Выход</button>
 			<Router basename="/">
 				<Routes>
 					<Route path="/" element={<VoteListPage />} />

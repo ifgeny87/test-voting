@@ -1,9 +1,9 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="backend dev" type="js.build_tools.npm">
-    <package-json value="$PROJECT_DIR$/backend/package.json" />
+  <configuration default="false" name="sdk test" type="js.build_tools.npm">
+    <package-json value="$PROJECT_DIR$/web-sdk/package.json" />
     <command value="run" />
     <scripts>
-      <script value="start:dev" />
+      <script value="test" />
     </scripts>
     <node-interpreter value="project" />
     <envs />
