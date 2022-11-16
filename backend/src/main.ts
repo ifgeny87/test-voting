@@ -45,7 +45,7 @@ async function bootstrap() {
 	);
 	app.enableCors();
 	app.setGlobalPrefix('api');
-	app.useGlobalPipes(new ValidateInputPipe());
+	app.useGlobalPipes(new ValidateInputPipe({ transform: true }));
 	app.use(CookieParser());
 	await app.listen(process.env.PORT || 3000);
 }

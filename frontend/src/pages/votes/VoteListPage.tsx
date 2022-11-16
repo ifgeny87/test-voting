@@ -44,7 +44,7 @@ export default function VoteListPage() {
 					<Title>
 						#{voteItem.id}
 						&nbsp;
-						<Link to={`/votes/${voteItem.id}`}>
+						<Link to={`/votes/view/${voteItem.id}`}>
 							{voteItem.title}
 						</Link>
 					</Title>

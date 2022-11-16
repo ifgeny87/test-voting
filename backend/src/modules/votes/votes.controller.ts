@@ -3,11 +3,13 @@ import {
 	Body,
 	ClassSerializerInterceptor,
 	Controller,
+	Delete,
 	Get,
 	HttpStatus,
 	NotFoundException,
 	Param,
 	Post,
+	Put,
 	Req,
 	Res,
 	UseGuards,
@@ -18,6 +20,7 @@ import { VotesService } from './votes.service';
 import { Vote, VoteStatus } from './vote.model';
 import { CreateVoteDto } from './dto/create-vote.dto';
 import { Response } from 'express';
+import { UpdateVoteDto } from './dto/update-vote.dto';
 
 @Controller('votes')
 @UseGuards(AuthGuard('jwt'))
@@ -60,10 +63,50 @@ export class VotesController
 		if (vote) {
 			throw new BadRequestException('Голосование для этой страницы уже существует');
 		}
-		// TODO add newVoteDto.showResultType check
+		if (newVoteDto.answers.length < 2) {
+			throw new BadRequestException('Вариантов ответа должно быть хотя бы 2');
+		}
 		await this.votesService.create({
 			...newVoteDto,
 			userId: req.user.id,
+		});
+	}
+
+	/**
+	 * Обновление голосования
+	 */
+	@Put(':voteId')
+	async updateOne(
+		@Param('voteId') voteId: number,
+		@Body() voteDto: UpdateVoteDto,
+	): Promise<void> {
+		const existVote = await this.votesService.findOneById(voteId);
+		if (!existVote) {
+			throw new NotFoundException('Голосование не найдено');
+		}
+		const anotherVote = await this.votesService.findOneByUrl(voteDto.url);
+		if (anotherVote && anotherVote?.id !== existVote.id) {
+			throw new BadRequestException('Голосование для этой страницы уже существует');
+		}
+		await this.votesService.update(existVote, {
+			...voteDto,
+		});
+	}
+
+	@Delete(':voteId')
+	async deleteOne(@Param('voteId') voteId: number, @Req() req: any): Promise<void> {
+		const vote = await this.votesService.findOne({
+			where: {
+				userId: req.user.id,
+				id: voteId,
+			},
+		});
+		if (!vote) {
+			throw new NotFoundException('Голосование не найдено');
+		}
+		await this.votesService.update(vote, {
+			isArchived: true,
+			url: `DELETED__${vote.url}`,
 		});
 	}
 

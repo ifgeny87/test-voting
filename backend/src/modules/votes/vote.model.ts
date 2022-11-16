@@ -1,4 +1,12 @@
-import { AutoIncrement, Column, DataType, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import {
+	AutoIncrement,
+	Column,
+	DataType,
+	DefaultScope,
+	Model,
+	PrimaryKey,
+	Table,
+} from 'sequelize-typescript';
 import { Exclude, Expose } from 'class-transformer';
 
 export enum VoteShowResultType
@@ -16,6 +24,11 @@ export enum VoteStatus
 
 @Exclude()
 @Table({ tableName: 'votes' })
+@DefaultScope({
+	where: {
+		isArchived: false,
+	},
+})
 export class Vote extends Model<Vote>
 {
 	@Expose()
@@ -55,4 +68,7 @@ export class Vote extends Model<Vote>
 		defaultValue: VoteStatus.RUNNING,
 	})
 	declare status: VoteStatus;
+
+	@Column({ type: DataType.BOOLEAN, allowNull: false, defaultValue: false })
+	declare isArchived: boolean;
 }

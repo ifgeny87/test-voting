@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { getVoteItemAction, VotePayload } from '../../store/actions/VoteActions';
@@ -18,6 +18,7 @@ export default function VoteViewItemPage() {
 		return votes?.find((v: VotePayload) => v.id === Number(voteId));
 	});
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (error) {
@@ -43,6 +44,10 @@ export default function VoteViewItemPage() {
 	function onTurnOff() {
 		turnOffVote(voteItem.id)
 			.then(updateVote)
+	}
+
+	function onEditVote() {
+		navigate(`/votes/edit/${voteItem.id}`);
 	}
 
 	function updateVote() {
@@ -80,5 +85,8 @@ export default function VoteViewItemPage() {
 		) : voteItem.status === VoteStatus.RUNNING ? (
 			<button onClick={onTurnOff}>Остановить голосование</button>
 		) : null}
+		<p>
+			<button onClick={onEditVote}>Редактировать голосование</button>
+		</p>
 	</>;
 }

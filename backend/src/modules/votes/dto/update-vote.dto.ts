@@ -2,18 +2,13 @@ import { VoteShowResultType } from '../vote.model';
 import { IsIn, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
 import { Transform } from 'class-transformer';
 
-export class CreateVoteDto
+export class UpdateVoteDto
 {
 	@Transform(({ value }) => value.trim())
 	@IsNotEmpty()
 	@MinLength(1)
 	@MaxLength(150)
 	readonly title: string;
-
-	@Transform(({ value }) => value.map(s => s.trim()).filter(Boolean))
-	@IsNotEmpty()
-	@MinLength(2)
-	readonly answers: string[];
 
 	@IsNotEmpty()
 	@IsString()

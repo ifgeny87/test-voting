@@ -13,6 +13,16 @@ class FetchBackend
 		const uri = `${this.apiUrl}${url}`;
 		return await axios.post(uri, data);
 	}
+
+	put = async (url: string, data?: any): Promise<any> => {
+		const uri = `${this.apiUrl}${url}`;
+		return await axios.put(uri, data);
+	}
+
+	delete = async (url: string, data?: any): Promise<any> => {
+		const uri = `${this.apiUrl}${url}`;
+		return await axios.delete(uri, data);
+	}
 }
 
 export const fetchBackend = new FetchBackend('/api/');

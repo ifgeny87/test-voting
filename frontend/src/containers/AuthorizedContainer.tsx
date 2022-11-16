@@ -6,6 +6,8 @@ import VoteListPage from '../pages/votes/VoteListPage';
 import VoteViewItemPage from '../pages/votes/VoteViewItemPage';
 import VoteCreateItemPage from '../pages/votes/VoteCreateItemPage';
 import { postLogout } from '../api/sign.api';
+import VoteEditItemPage from '../pages/votes/VoteEditItemPage';
+import PageNotFound from '../pages/service/PageNotFound';
 
 export default function AuthorizedContainer() {
 	const dispatch = useDispatch();
@@ -22,7 +24,9 @@ export default function AuthorizedContainer() {
 				<Routes>
 					<Route path="/" element={<VoteListPage />} />
 					<Route path="/votes/create" element={<VoteCreateItemPage />} />
-					<Route path="/votes/:voteId" element={<VoteViewItemPage />} />
+					<Route path="/votes/edit/:voteId" element={<VoteEditItemPage />} />
+					<Route path="/votes/view/:voteId" element={<VoteViewItemPage />} />
+					<Route path="*" element={<PageNotFound />} />
 				</Routes>
 			</Router>
 		</>

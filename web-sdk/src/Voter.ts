@@ -10,6 +10,7 @@ export class Voter
 	private node: HTMLElement;
 	private voteRes: SiteVoteResDto;
 	private error: string;
+	private warning: string;
 	private isSubmiting: boolean = false;
 	private selectedValue: number | null = null;
 
@@ -29,7 +30,7 @@ export class Voter
 	 */
 	setupVote = (exToken: string, node: HTMLElement) => {
 		this.node = node;
-		this.updateNode();
+		this.updateSiteNode();
 		this.exToken = exToken;
 		this.updateVoteInfo();
 	}
@@ -46,10 +47,10 @@ export class Voter
 					this.error = 'Необработанная ошибка';
 				}
 			})
-			.finally(this.updateNode)
+			.finally(this.updateSiteNode)
 	}
 
-	private updateNode = () => {
+	private updateSiteNode = () => {
 		if (!this.voteRes && !this.error) {
 			return this.node.innerHTML = '<center>Загрузка</center>';
 		}
@@ -87,6 +88,10 @@ export class Voter
 			input.addEventListener('change', this.onChangeValue);
 			label.appendChild(new Text(ans));
 		});
+		if (this.warning) {
+			createNode('div', '_warning', fieldset)
+				.innerText = this.warning;
+		}
 		const btnArea = createNode('div', '_buttons', fieldset);
 		const voteBtn = createNode('button', null, btnArea);
 		voteBtn.innerText = 'Голосовать';
@@ -109,14 +114,23 @@ export class Voter
 
 	private onChangeValue = (event: any) => {
 		this.selectedValue = Number(event.target.value);
+		if(this.warning) {
+			this.warning = null;
+			this.updateSiteNode();
+		}
 	}
 
 	private onVoteClick = () => {
+		// проверка
+		if (this.selectedValue === null) {
+			this.warning = 'Выберите вариант ответа';
+			return this.updateSiteNode();
+		}
 		// запоминаем userId в куках
 		saveCookieUserId(this.cookieUserId);
 		this.isSubmiting = true;
-		this.updateNode();
-		// TODO check select
+		this.updateSiteNode();
+		// отправляем ответ
 		sendVote(document.location.href, this.exToken, this.cookieUserId, this.selectedValue)
 			.then(() => {
 				// обновляем статус голосования
@@ -132,7 +146,7 @@ export class Voter
 			.finally(() => {
 				debugger;
 				this.isSubmiting = false;
-				this.updateNode();
+				this.updateSiteNode();
 			})
 	}
 }

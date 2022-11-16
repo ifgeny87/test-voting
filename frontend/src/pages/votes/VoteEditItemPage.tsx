@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { VoteShowResultType } from '../../core/types';
-import { createVote } from '../../api/votes.api';
-import { CreateVoteDto } from '../../api/dto/CreateVoteDto';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
-import { clearVoteListAction } from '../../store/actions/VoteActions';
+import { clearVoteListAction, VotePayload } from '../../store/actions/VoteActions';
 import { VoteShowResultCaptions } from '../../core/typeCast';
+import { VoteShowResultType } from '../../core/types';
+import { deleteVote, updateVote } from '../../api/votes.api';
+import { useForm } from 'react-hook-form';
+import { UpdateVoteDto } from '../../api/dto/UpdateVoteDto';
 
 const Fieldset = styled.fieldset`
   border: none;
@@ -24,14 +24,6 @@ const titleOptions = {
 	minLength: 1,
 	maxLength: 150,
 	validate: (s: string) => !!s.trim().length,
-}
-
-const answersOptions = {
-	required: true,
-	validate: (s: string) => s.split('\n')
-		.filter(s1 => s1.trim().length)
-		.length > 1,
-	message: 'Нужно указать хотя бы 2 варианта ответа',
 }
 
 const urlOptions = {
@@ -51,13 +43,21 @@ const resultTypeValues = [
 	VoteShowResultType.SHOW_WHEN_VOTE_STOP,
 ]
 
-export default function VoteCreateItemPage() {
+export default function VoteEditItemPage() {
 	const [error, setError] = useState<string>();
+	const { voteId } = useParams();
+	const voteItem: VotePayload = useSelector(({ votes }: any) => {
+		return votes?.find((v: VotePayload) => v.id === Number(voteId));
+	});
 	const {
 		register,
 		handleSubmit,
 		formState: { errors, isSubmitting },
-	} = useForm();
+	} = useForm({
+		defaultValues: {
+			...voteItem,
+		},
+	});
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
@@ -68,15 +68,22 @@ export default function VoteCreateItemPage() {
 		}
 	}, [error]);
 
+	if (!voteItem) {
+		return <>
+			<div>
+				<Link to="/">назад</Link>
+			</div>
+			Голосование не найдено
+		</>;
+	}
+
 	/**
-	 * Отправка запроса на создание голосования
+	 * Отправка запроса на обновление голосования
 	 * @param data
 	 */
 	async function onSubmit(data: any) {
-		const answers = data.answers.split('\n');
-		return await createVote(new CreateVoteDto(
+		return await updateVote(voteItem.id, new UpdateVoteDto(
 			data.title,
-			answers,
 			data.showResultType,
 			data.url,
 		))
@@ -95,17 +102,27 @@ export default function VoteCreateItemPage() {
 			});
 	}
 
+	function onDelete() {
+		if (!window.confirm('Действительно удалить?')) return;
+		deleteVote(voteItem.id)
+			.then(() => {
+				// при удаче затираем текущий список голосований и переходим на страницу списка
+				dispatch(clearVoteListAction());
+				navigate('/');
+			})
+	}
+
 	return <>
 		<div>
 			<Link to="/">назад</Link>
 		</div>
-		<h1>Создание голосования</h1>
+		<h1>Редактирование голосования #{voteItem.id}</h1>
 		<form onSubmit={handleSubmit(onSubmit)}>
 			<Fieldset disabled={isSubmitting}>
 				<Field>
 					Название голосования:
 					<br />
-					<input {...register('title', titleOptions)} />
+					<input {...register('title', titleOptions)}/>
 					{errors.title ? (
 						<div className="error">
 							{String(errors.title.message) || 'Заполните поле'}
@@ -114,18 +131,14 @@ export default function VoteCreateItemPage() {
 				</Field>
 				<Field>
 					Варианты ответов:
-					<br />
-					<textarea {...register('answers', answersOptions)} />
-					{errors.answers ? (
-						<div className="error">
-							{String(errors.answers.message) || 'Заполните поле'}
-						</div>
-					) : null}
+					<ul>
+						{voteItem.answers.map(a => <li key={a}>{a}</li>)}
+					</ul>
 				</Field>
 				<Field>
 					URL страницы для голосования:
 					<br />
-					<input {...register('url', urlOptions)} />
+					<input {...register('url', urlOptions)}/>
 					{errors.url ? (
 						<div className="error">
 							{String(errors.url.message) || 'Заполните поле'}
@@ -150,8 +163,12 @@ export default function VoteCreateItemPage() {
 					) : null}
 				</Field>
 				{error ? <div className="error">Ошибка: {error}</div> : null}
-				<button type="submit">Создать голосование</button>
+				<button type="submit">Сохранить изменения</button>
 			</Fieldset>
 		</form>
+		<p>
+			<button onClick={onDelete} style={{ border: '2px solid red' }}>Удалить голосование
+			</button>
+		</p>
 	</>;
 }
